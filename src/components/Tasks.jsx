@@ -1,11 +1,21 @@
 import { Form, redirect, useNavigate } from "react-router-dom";
+import { Toaster, toast } from 'sonner'
+import { useEffect } from "react";
 
-import { deleteTask } from "../api/tasks";
+import { deleteTask, updateCheckTask } from "../api/tasks";
 import '../assets/css/tasks.css'
+
+import lottie from 'lottie-web';
+import { defineElement } from 'lord-icon-element';
+
+// define "lord-icon" custom element with default properties
+defineElement(lottie.loadAnimation);
 
 export async function action({ params }) {
     if( confirm('¿Estás seguro de eliminar la tarea?') ){
-        deleteTask( params.taskId );
+        await deleteTask( params.taskId );
+
+        toast.success('Tarea eliminada correctamente.');
     }
 
     return redirect('/');
@@ -13,6 +23,25 @@ export async function action({ params }) {
 
 export const Tasks = ({ tasks }) => {
     const navigate = useNavigate();
+
+    async function checkTask ( e ) {
+        const checkbox = e.target;
+
+        await updateCheckTask( checkbox.id, checkbox.checked );
+    }
+
+    useEffect(() => {
+      // * Obtenemos todos los inputs con el atributo "data-checked"
+      const inputs = document.querySelectorAll('input[type="checkbox"]');
+
+      // * Recorremos los inputs
+      inputs.forEach( input => {
+          // * Asignamos el valor del atributo "data-checked" a la propiedad "checked" del input
+          input.checked = eval( input.dataset.checked );
+      })
+    }, [])
+    
+
     return (
         <>
             <div className='px-4 py-6 pb-8'>
@@ -21,27 +50,26 @@ export const Tasks = ({ tasks }) => {
                     tasks.map((task, index) => (
                         <div key={ index } className='flex justify-between items-center space-y-2'>
                             <div id="checklist" className='w-full flex flex-grow'>
-                                <input id="01" type="checkbox" name="r" value="1" />
+                                <input id={ task.id } type="checkbox" name="completed" value="1" onChange={ e => checkTask( e ) } data-checked={ task.completed } />
                                 <label onClick={ () => navigate(`/tasks/${ task.id }/edit`) }>{ task.title }</label>
                             </div>
                             <div className='flex justify-center items-center gap-2'>
-                                <div className={`px-4 py-2 border border-slate-200 rounded-md inline-flex space-x-1 items-center ${ task.priority == "Alta" ? 'text-rose-600' : 'text-emerald-500' } text-xs font-semibold`}>
+                                <div className={`px-4 py-2 border border-slate-200 rounded-md inline-flex space-x-1 items-center ${ task.priority == "Alta" ? 'text-rose-600' : 'text-cyan-500' } text-xs font-semibold`}>
                                     { task.priority }
                                 </div>
                                 <Form method="POST" action={`/tasks/${ task.id }/delete`}>
-                                    <button type='submit' className='p-2 border border-slate-200 rounded-md inline-flex space-x-1 items-center hover:bg-rose-600 text-rose-600 hover:text-white transition-colors duration-200'>
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-4 h-4 ">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-                                        </svg>   
+                                    <button id="button_destroy" type='submit' className='p-2 border border-slate-200 rounded-md inline-flex space-x-1 items-center hover:bg-rose-600 text-rose-600 hover:text-white transition-colors duration-200'>
+                                        <lord-icon src="https://cdn.lordicon.com/kfzfxczd.json" trigger="hover" target="#button_destroy" state="hover-empty" class="w-4 h-4 current-color"></lord-icon>
                                     </button>
                                 </Form>
                             </div>
                         </div>
                     ))
                 : 
-                    <p className='text-center text-indigo-500 font-semibold'>No hay tareas registradas aún</p>
+                    <p className='text-center text-cyan-500 font-semibold'>No hay tareas registradas aún</p>
                 }
             </div>
+            <Toaster expand={true} position="top-right" richColors closeButton />
         </>
     )
 }

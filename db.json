@@ -1,22 +1,22 @@
 {
   "tasks": [
     {
-      "id": 1,
-      "title": "PC Gamer",
-      "description": "Montar un PC Gamer",
-      "priority": "Baja",
-      "completed": false,
-      "date": "2023-08-24 12:00:00",
-      "user": "axel"
-    },
-    {
       "id": 2,
       "title": "Asear cuarto",
       "description": "Montar un PC Gamer",
       "priority": "Alta",
-      "completed": false,
+      "completed": true,
       "date": "2023-08-24 00:05:00",
       "user": "axel"
+    },
+    {
+      "title": "PC Gamer",
+      "description": "Ryzen 7\nRTX 3080",
+      "priority": "Baja",
+      "completed": true,
+      "date": "2023-08-30 06:35:34",
+      "user": "axel",
+      "id": 3
     }
   ]
 }

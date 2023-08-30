@@ -7,6 +7,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Layout } from './components/Layout';
 import { Index, loader as loaderTasks } from "./pages/Index";
 import { action as actionDeleteTask } from "./components/Tasks";
+import { AddTask, action as actionAddTask } from './pages/AddTask';
 
 // ! ----------------------------------
 // ! Importación de estilos
@@ -28,7 +29,8 @@ const router = createBrowserRouter([
             },
             {
                 path: '/tasks/add',
-                element: <h1>Tasks Add</h1>
+                element: <AddTask />,
+                action: actionAddTask,
             },
             {
                 path: '/tasks/:taskId/edit',

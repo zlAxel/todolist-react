@@ -31,3 +31,53 @@ export async function deleteTask ( id ) {
         console.log( error );
     }
 }
+
+// ! -----------------------------------------------
+// ! Funcion para agregar una tarea a la API
+
+export async function addTask ( task ) {
+    try {
+        const url = import.meta.env.VITE_API_URL;
+
+        // ? Asignamos los valores a la tarea
+        task.completed = false;                                                     // * Asignamos el estado de la tarea
+        task.date      = new Date().toISOString().slice(0, 19).replace('T', ' ');   // * Asignamos la fecha con formato (yyyy-mm-dd hh:mm:ss)
+        task.user      = "axel";                                                    // * Asignamos el usuario
+
+        const response = await fetch( url, {
+            method: 'POST',
+            body: JSON.stringify( task ),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+
+        await response.json()
+    } catch (error) {
+        console.log( error );
+    }
+}
+
+// ! -----------------------------------------------
+// ! Funcion para actualizar el estado una tarea de la API ( PATCH )
+
+export async function updateCheckTask ( task_id, state ){
+    try {
+        const url = `${ import.meta.env.VITE_API_URL }/${ task_id }`;
+
+        // * Asignamos el estado de la tarea
+        state = { completed: state };
+
+        const response = await fetch( url, {
+            method: 'PATCH',
+            body: JSON.stringify( state ),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+
+        await response.json()
+    } catch (error) {
+        console.log( error );
+    }
+}

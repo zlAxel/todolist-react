@@ -1,5 +1,11 @@
 import { useNavigate } from "react-router-dom";
 
+import lottie from 'lottie-web';
+import { defineElement } from 'lord-icon-element';
+
+// define "lord-icon" custom element with default properties
+defineElement(lottie.loadAnimation);
+
 export const Header = () => {
     const navigate = useNavigate();
     return (
@@ -10,10 +16,12 @@ export const Header = () => {
                     <p className="text-slate-500 mt-1">Hola, aquí tienes tus últimas tareas</p>
                 </div>
                 <div className="inline-flex space-x-2 items-center">
-                    <button type="button" className="p-2 border border-slate-200 rounded-md inline-flex space-x-1 items-center text-indigo-200 hover:text-white bg-indigo-600 hover:bg-indigo-500">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-4 h-4">
+                    <button type="button" id="button_clock" className="p-2 border border-slate-200 rounded-md inline-flex space-x-1 items-center text-cyan-50 hover:text-white bg-cyan-600 hover:bg-cyan-500">
+                        {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-4 h-4">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
+                        </svg> */}
+                        <lord-icon src="https://cdn.lordicon.com/qznlhdss.json" trigger="loop-on-hover" target="#button_clock" delay="1000" class="w-4 h-4 current-color">
+                        </lord-icon>
                         <span className="text-sm font-medium hidden md:block">Urgentes</span>                     
                     </button>
                     <button type="button" className="p-2 border border-slate-200 rounded-md inline-flex space-x-1 items-center hover:bg-slate-200">
@@ -22,10 +30,11 @@ export const Header = () => {
                         </svg> 
                         <span className="text-sm hidden md:block">Últimas</span>                    
                     </button>
-                    <button type="button" onClick={ () => navigate('/tasks/add') } className="p-2 border border-slate-200 rounded-md inline-flex space-x-1 items-center hover:bg-indigo-600 text-indigo-800 hover:text-white transition-colors duration-200">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-4 h-4">
+                    <button type="button" onClick={ () => navigate('/tasks/add') } id="button_new" className="p-2 border border-slate-200 rounded-md inline-flex space-x-1 items-center hover:bg-cyan-600 text-cyan-800 hover:text-white transition-colors duration-200">
+                        {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-4 h-4">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-                        </svg>
+                        </svg> */}
+                        <lord-icon src="https://cdn.lordicon.com/ynwbvguu.json" trigger="loop-on-hover" delay="500" state="hover" target="#button_new" class="w-6 h-6 current-color"></lord-icon>
                     </button>
                 </div>
             </div>
